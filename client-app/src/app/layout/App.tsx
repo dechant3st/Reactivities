@@ -13,41 +13,39 @@ function App() {
 
   return (
     <>
-      <Container style={{ marginTop: "7em" }}>
-        <Routes>
-          <Route index element={<HomePage />} />
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <Container style={{ marginTop: "7em" }}>
+              <NavBar />
+              <Outlet />
+            </Container>
+          }
+        >
+          <Route path="activities" element={<ActivityDashboard />} />
+          <Route path="activities/:id" element={<ActivityDetails />} />
           <Route
-            path="/"
-            element={
-              <>
-                <NavBar />
-                <Outlet />
-              </>
-            }
-          >
-            <Route path="activities" element={<ActivityDashboard />} />
-            <Route path="activities/:id" element={<ActivityDetails />} />
-            <Route
-              path={"createActivity"}
-              element={<ActivityForm key={location.key} />}
-            />
-            <Route
-              path={"manage/:id"}
-              element={<ActivityForm key={location.key} />}
-            />
-            <Route path="activities" element={<ActivityDashboard />} />
-            <Route path="activities/:id" element={<ActivityDetails />} />
-            <Route
-              path={"createActivity"}
-              element={<ActivityForm key={location.key} />}
-            />
-            <Route
-              path={"manage/:id"}
-              element={<ActivityForm key={location.key} />}
-            />
-          </Route>
-        </Routes>
-      </Container>
+            path={"createActivity"}
+            element={<ActivityForm key={location.key} />}
+          />
+          <Route
+            path={"manage/:id"}
+            element={<ActivityForm key={location.key} />}
+          />
+          <Route path="activities" element={<ActivityDashboard />} />
+          <Route path="activities/:id" element={<ActivityDetails />} />
+          <Route
+            path={"createActivity"}
+            element={<ActivityForm key={location.key} />}
+          />
+          <Route
+            path={"manage/:id"}
+            element={<ActivityForm key={location.key} />}
+          />
+        </Route>
+      </Routes>
     </>
   );
 }
