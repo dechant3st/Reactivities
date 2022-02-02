@@ -1,4 +1,6 @@
+using Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,12 +20,15 @@ namespace API
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
 
-            try {
+            try 
+            {
                 var context = services.GetRequiredService<DataContext>();
+                var userManage = services.GetRequiredService<UserManager<AppUser>>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedData(context);
+                await Seed.SeedData(context, userManage);
             }
-            catch(Exception ex) {
+            catch(Exception ex) 
+            {
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occured during migaration");
             }
