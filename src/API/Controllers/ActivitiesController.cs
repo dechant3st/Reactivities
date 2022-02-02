@@ -11,34 +11,35 @@ namespace API.Controllers
     public class ActivitiesController: BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>> GetActivities(CancellationToken cancellationToken) 
+        public async Task<IActionResult> GetActivities(CancellationToken cancellationToken) 
         {
-            return await Mediator.Send(new List.Query(), cancellationToken);
+            return HandleResult(await Mediator.Send(new List.Query(), cancellationToken));
         }
 
         [HttpGet("{id}")] // activities/id
-        public async Task<ActionResult<Activity>> GetActivity(Guid id, CancellationToken cancellationToken) 
+        public async Task<IActionResult> GetActivity(Guid id, CancellationToken cancellationToken) 
         {
-            return await Mediator.Send(new Details.Query{ Id = id}, cancellationToken);
+            var result = await Mediator.Send(new Details.Query{ Id = id}, cancellationToken);
+            return HandleResult(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity, CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new Create.Command { Activity = activity }, cancellationToken));
+            return HandleResult(await Mediator.Send(new Create.Command { Activity = activity }, cancellationToken));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivities(Guid id, Activity activity, CancellationToken cancellationToken)
         {
             activity.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command {Activity = activity}, cancellationToken));
+            return HandleResult(await Mediator.Send(new Edit.Command {Activity = activity}, cancellationToken));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id, CancellationToken cancellationToken) 
         {
-            return Ok(await Mediator.Send(new Delete.Command { Id = id }, cancellationToken));
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }, cancellationToken));
         }
     }
 }
