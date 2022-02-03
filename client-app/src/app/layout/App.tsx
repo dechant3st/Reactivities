@@ -15,6 +15,7 @@ import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
+import ProfilePage from "../../features/profiles/ProfilePage";
 
 function App() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Container style={{ marginTop: "7em" }}>
+            <Container style={{ marginTop: "2em" }}>
               <NavBar />
               <Outlet />
             </Container>
@@ -66,6 +67,7 @@ function App() {
             path={"manage/:id"}
             element={<ActivityForm key={location.key} />}
           />
+          <Route path="/profiles/:username" element={<ProfilePage />} />
           <Route path="errors" element={<TestErrors />} />
           <Route path="/erver-error" element={<ServerError />} />
           <Route path="login" element={<LoginForm />} />
