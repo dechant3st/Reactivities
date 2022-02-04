@@ -41,22 +41,12 @@ function App() {
         <Route
           path="/"
           element={
-            <Container style={{ marginTop: "2em" }}>
+            <Container style={{ marginTop: "5em" }}>
               <NavBar />
               <Outlet />
             </Container>
           }
         >
-          <Route path="activities" element={<ActivityDashboard />} />
-          <Route path="activities/:id" element={<ActivityDetails />} />
-          <Route
-            path={"createActivity"}
-            element={<ActivityForm key={location.key} />}
-          />
-          <Route
-            path={"manage/:id"}
-            element={<ActivityForm key={location.key} />}
-          />
           <Route path="activities" element={<ActivityDashboard />} />
           <Route path="activities/:id" element={<ActivityDetails />} />
           <Route
