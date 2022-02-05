@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { store, StoreContext } from "./app/stores/store";
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import ScrollToTop from "./app/layout/ScrollToTop";
 import "react-calendar/dist/Calendar.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +16,7 @@ export const history = createBrowserHistory();
 ReactDOM.render(
   <StoreContext.Provider value={store}>
     <HistoryRouter history={history}>
+      <ScrollToTop />
       <App />
     </HistoryRouter>
   </StoreContext.Provider>,
