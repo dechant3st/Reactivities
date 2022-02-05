@@ -52,7 +52,7 @@ namespace API
                     .FontSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://fonts.gstatic.com", "data:"))
                     .FormActions(s => s.Self())
                     .FrameAncestors(s => s.Self())
-                    .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "data:", "https://www.facebook.com"))
+                    .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "data:", "https://www.facebook.com", "https://platform-lookaside.fbsbx.com"))
                     .ScriptSources(s => s.Self().CustomSources("https://connect.facebook.net", "sha256-jHjrsr7JVaHT9vhkjR8+Oee+efMV3QNhHviZie9d11w="))
             );
 
