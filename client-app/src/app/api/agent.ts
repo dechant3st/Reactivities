@@ -100,10 +100,12 @@ const Account = {
   login: (user: UserFormValues) => requests.post<User>("/account/login", user),
   register: (user: UserFormValues) =>
     requests.post<User>("/account/register", user),
+  fbLogin: (accessToken: string) =>
+    requests.post<User>(`/account/fbLogin?accessToken=${accessToken}`, {}),
 };
 
 const Profiles = {
-  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
   uploadPhoto: (file: Blob) => {
     let formData = new FormData();
     formData.append("File", file);
