@@ -48,7 +48,12 @@ namespace API
             app.UseXfo(options => options.Deny());
             app.UseCsp(options =>
                 options.BlockAllMixedContent()
-                    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "sha256-yChqzBduCCi4o4xdbXRXh4U/t1rP4UUUMJt+rB+ylUI="))
+                    .StyleSources(s => s.Self().CustomSources(
+                        "https://fonts.googleapis.com",
+                        "unsafe-hashes",
+                        "sha256-yChqzBduCCi4o4xdbXRXh4U/t1rP4UUUMJt+rB+ylUI=",
+                        "sha256-r3x6D0yBZdyG8FpooR5ZxcsLuwuJ+pSQ/80YzwXS5IU="
+                    ))
                     .FontSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://fonts.gstatic.com", "data:"))
                     .FormActions(s => s.Self())
                     .FrameAncestors(s => s.Self())
