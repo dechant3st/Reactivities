@@ -21,8 +21,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -f /srv/dockerfiles/frontend/Dockerfile -t frontend:staging ."
-        sh "docker build -f /srv/dockerfiles/backend/Dockerfile -t backend:staging ."
+        sh "docker build -t frontend:staging ."
+        sh "docker build -t backend:staging ."
 
         sh "docker tag frontend:staging ${REGISTRY}/frontend:staging"
         sh "docker tag backend:staging ${REGISTRY}/backend:staging"
