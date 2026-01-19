@@ -28,7 +28,7 @@ axios.interceptors.response.use(
     if (pagination) {
       response.data = new PaginatedResult(
         response.data,
-        JSON.parse(pagination)
+        JSON.parse(pagination),
       );
     }
     return response as AxiosResponse<PaginatedResult<any>>;
@@ -40,14 +40,17 @@ axios.interceptors.response.use(
         if (typeof data === "string") {
           toast.error(data);
         }
-        if (config.method === "get" && data.errors.hasOwnProperty("id")) {
+        if (
+          config.method === "get" &&
+          (data as any).errors.hasOwnProperty("id")
+        ) {
           history.push("/not-found");
         }
-        if (data.errors) {
+        if ((data as any).errors) {
           const modelStateErrors = [];
-          for (const key in data.errors) {
-            if (data.errors[key]) {
-              modelStateErrors.push(data.errors[key]);
+          for (const key in (data as any).errors) {
+            if ((data as any).errors[key]) {
+              modelStateErrors.push((data as any).errors[key]);
             }
           }
 
@@ -68,13 +71,13 @@ axios.interceptors.response.use(
         break;
       case 500:
         console.log(data);
-        store.commonStore.setServerError(data);
+        store.commonStore.setServerError(data as any);
         history.push("/server-error");
         break;
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
@@ -130,7 +133,7 @@ const Profiles = {
     requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
   listActivities: (username: string, predicate: string) =>
     requests.get<UserActivity[]>(
-      `/profiles/${username}/activities?predicate=${predicate}`
+      `/profiles/${username}/activities?predicate=${predicate}`,
     ),
 };
 
