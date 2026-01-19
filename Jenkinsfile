@@ -21,8 +21,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -t ${REGISTRY}/frontend:${env.IMG_TAG} ."
-        sh "docker build -t ${REGISTRY}/backend:${env.IMG_TAG} ."
+        sh "docker build -t ${REGISTRY}/frontend:staging ."
+        sh "docker build -t ${REGISTRY}/backend:staging ."
       }
     }
     stage('Push') {
@@ -30,8 +30,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
           sh "echo $REG_PASS | docker login ${REGISTRY} -u $REG_USER --password-stdin"
         }
-        sh "docker push ${REGISTRY}/frontend:${env.IMG_TAG}"
-        sh "docker push ${REGISTRY}/backend:${env.IMG_TAG}"
+        sh "docker push ${REGISTRY}/frontend:staging"
+        sh "docker push ${REGISTRY}/backend:staging"
       }
     }
     stage('Deploy') {
