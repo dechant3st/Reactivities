@@ -39,7 +39,8 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh "docker compose -f docker-compose.staging.yml up -d --remove-orphans"
+        sh "docker compose pull"
+        sh "docker compose up -d --remove-orphans"
       }
     }
   }
