@@ -21,7 +21,14 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMG_TAG} ."
+        sh "docker build -f /srv/dockerfiles/frontend/Dockerfile -t frontend:${env.BRANCH_NAME} ."
+        sh "docker build -f /srv/dockerfiles/backend/Dockerfile -t backend:${env.BRANCH_NAME} ."
+      }
+    }
+    stage('Tagging') {
+      steps {
+        sh "docker tag frontend:${env.BRANCH_NAME} 192.168.1.17:5000/frontend:${env.BRANCH_NAME}"
+        sh "docker tag backend:${env.BRANCH_NAME} 192.168.1.17:5000/backend:${env.BRANCH_NAME}"
       }
     }
     stage('Push') {
@@ -29,13 +36,14 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
           sh "echo $REG_PASS | docker login ${REGISTRY} -u $REG_USER --password-stdin"
         }
-        sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMG_TAG}"
+        sh "docker push ${REGISTRY}/frontend:${env.BRANCH_NAME}"
+        sh "docker push ${REGISTRY}/backend:${env.BRANCH_NAME}"
       }
     }
     stage('Deploy') {
       steps {
         sshagent (credentials: ['deploy-ssh-key']) {
-          sh "ssh -o StrictHostKeyChecking=no deploy@your.server.ip 'cd ${DEPLOY_DIR} && docker compose pull && docker compose up -d --remove-orphans'"
+          sh "ssh -o StrictHostKeyChecking=no deploy@192.168.1.17 'cd ${DEPLOY_DIR} && docker compose pull && docker compose up -d --remove-orphans'"
         }
       }
     }
