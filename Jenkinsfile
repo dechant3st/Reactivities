@@ -39,6 +39,9 @@ pipeline {
     }
     stage('Deploy') {
       steps {
+        withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
+          sh "echo $REG_PASS | docker login ${REGISTRY} -u $REG_USER --password-stdin"
+        }
         sh "docker compose pull"
         sh "docker compose up -d --remove-orphans"
       }
