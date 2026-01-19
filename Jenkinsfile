@@ -10,9 +10,9 @@ pipeline {
       steps {
         script {
           if (env.BRANCH_NAME == 'production') {
-            env.IMG_TAG = 'latest'; env.DEPLOY_DIR = '/srv/docker/production'
+            env.IMG_TAG = 'prod' ?: sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim(); env.DEPLOY_DIR = '/srv/docker/production'
           } else if (env.BRANCH_NAME == 'staging') {
-            env.IMG_TAG = 'staging'; env.DEPLOY_DIR = '/srv/docker/staging'
+            env.IMG_TAG = 'staging' ?: sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim(); env.DEPLOY_DIR = '/srv/docker/staging'
           } else {
             env.IMG_TAG = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"; env.DEPLOY_DIR = '/srv/docker/staging'
           }
@@ -21,8 +21,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -t ${REGISTRY}/frontend:${env.BRANCH_NAME} ."
-        sh "docker build -t ${REGISTRY}/backend:${env.BRANCH_NAME} ."
+        sh "docker build -t ${REGISTRY}/frontend:${env.IMG_TAG} ."
+        sh "docker build -t ${REGISTRY}/backend:${env.IMG_TAG} ."
       }
     }
     stage('Push') {
@@ -30,8 +30,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
           sh "echo $REG_PASS | docker login ${REGISTRY} -u $REG_USER --password-stdin"
         }
-        sh "docker push ${REGISTRY}/frontend:${env.BRANCH_NAME}"
-        sh "docker push ${REGISTRY}/backend:${env.BRANCH_NAME}"
+        sh "docker push ${REGISTRY}/frontend:${env.IMG_TAG}"
+        sh "docker push ${REGISTRY}/backend:${env.IMG_TAG}"
       }
     }
     stage('Deploy') {
