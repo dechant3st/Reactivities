@@ -39,9 +39,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sshagent (credentials: ['deploy-ssh-key']) {
-          sh "ssh -o StrictHostKeyChecking=no blackcrow@192.168.1.17 'cd ${DEPLOY_DIR} && docker compose pull && docker compose up -d --remove-orphans'"
-        }
+        sh "cd ${DEPLOY_DIR} && docker compose pull && docker compose up -d --remove-orphans"
       }
     }
   }
