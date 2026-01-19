@@ -39,11 +39,12 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
-          sh "echo $REG_PASS | docker login ${REGISTRY} -u $REG_USER --password-stdin"
+        withCredentials([usernamePassword(credentialsId: 'registry-creds', usernameVariable: 'DEPLOY_USER', passwordVariable: 'DEPLOY_PASS')]) {
+          sh """
+                sshpass -p '${DEPLOY_PASS}' ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@192.168.1.17 \
+                "cd ${DEPLOY_DIR} && docker compose pull && docker compose up -d --remove-orphans"
+            """
         }
-        sh "docker compose pull"
-        sh "docker compose up -d --remove-orphans"
       }
     }
   }
