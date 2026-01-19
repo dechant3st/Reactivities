@@ -21,14 +21,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -f /srv/dockerfiles/frontend/Dockerfile -t frontend:${env.BRANCH_NAME} ."
-        sh "docker build -f /srv/dockerfiles/backend/Dockerfile -t backend:${env.BRANCH_NAME} ."
-      }
-    }
-    stage('Tagging') {
-      steps {
-        sh "docker tag frontend:${env.BRANCH_NAME} 192.168.1.17:5000/frontend:${env.BRANCH_NAME}"
-        sh "docker tag backend:${env.BRANCH_NAME} 192.168.1.17:5000/backend:${env.BRANCH_NAME}"
+        sh "docker build -t ${REGISTRY}/frontend:${env.BRANCH_NAME} ."
+        sh "docker build -t ${REGISTRY}/backend:${env.BRANCH_NAME} ."
       }
     }
     stage('Push') {
