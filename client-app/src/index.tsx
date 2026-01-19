@@ -15,12 +15,12 @@ export const history = createBrowserHistory();
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>
-    <HistoryRouter history={history}>
+    <HistoryRouter history={history as any}>
       <ScrollToTop />
       <App />
     </HistoryRouter>
   </StoreContext.Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -5,7 +5,7 @@ import { useStore } from "../../../app/stores/store";
 import ActivityList from "./ActivityList";
 import ActivityFilters from "./ActivityFilters";
 import { PagingParams } from "../../../app/models/pagination";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 import ActivityListItemPlaceholder from "./ActivityListItemPlaceholder";
 
 function ActivityDashboard() {
@@ -34,14 +34,14 @@ function ActivityDashboard() {
           </>
         ) : (
           <InfiniteScroll
-            pageStart={0}
-            loadMore={handleGetNext}
+            loader={<h4>Loading...</h4>}
+            dataLength={pagination?.totalPages ?? 0 * 10}
+            next={handleGetNext}
             hasMore={
               !loadingNext &&
               !!pagination &&
               pagination.currentPage < pagination.totalPages
             }
-            initialLoad={false}
           >
             <ActivityList />
           </InfiniteScroll>
