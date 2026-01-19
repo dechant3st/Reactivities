@@ -21,8 +21,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "docker build -t ${REGISTRY}/frontend:staging ."
-        sh "docker build -t ${REGISTRY}/backend:staging ."
+        sh "docker build -f /var/dockerfiles/frontend/Dockerfile -t ${REGISTRY}/frontend:staging ."
+        sh "docker build -f /var/dockerfiles/backend/Dockerfile -t ${REGISTRY}/backend:staging ."
       }
     }
     stage('Push') {
